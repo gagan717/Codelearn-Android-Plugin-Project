@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+<extension point="org.eclipse.debug.ui.launchShortcuts">
+        <shortcut
+            class="adt_launcherjuno.Launcher"
+            icon="icons/cl.ico"
+            id="adt_launcherjuno.LaunchShortcut"
+            label="Android App Codelearn"
+            modes="run, debug">
+            <contextualLaunch>
+                <enablement>
+                    <with variable="selection">
+                        <count value="1" />
+                        <iterate>
+                            <or>
+                                <adapt type="org.eclipse.core.resources.IFile">
+                                    <and>
+                                        <test
+                                            property="org.eclipse.core.resources.contentTypeId"
+                                            value="org.eclipse.core.runtime.xml" />
+                                        <test
+                                            property="org.eclipse.core.resources.projectNature"
+                                            value="com.android.ide.eclipse.adt.AndroidNature" />
+                                    </and>
+                                </adapt>
+                                <and>
+                                    <test property="org.eclipse.jdt.launching.isContainer" />
+                                    <test
+                                        property="org.eclipse.jdt.launching.hasProjectNature"
+                                        args="com.android.ide.eclipse.adt.AndroidNature" />
+                                </and>
+                            </or>
+                        </iterate>
+                    </with>
+                </enablement>
+            </contextualLaunch>
+            <perspective id="org.eclipse.jdt.ui.JavaPerspective" />
+            <perspective id="org.eclipse.debug.ui.DebugPerspective" />
+            <configurationType id="BLAH.LaunchConfigType">
+            </configurationType>
+            <description
+                description="Runs a Codelearn Android Application"
+                mode="run">
+            </description>
+            <description
+                description="Debugs a Codelearn Android Application"
+                mode="debug">
+            </description>
+        </shortcut>
+    </extension>
+
+
+<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        <launchConfigurationType
+            delegate="adt_launcherjuno.LaunchDelegate"
+            delegateDescription="The BLAH BLAH"
+            delegateName="BLAH Launcher"
+            id="BLAH.LaunchConfigType"
+            modes="debug, run"
+            name="Codelearn Android Application"
+            public="true"
+            sourceLocatorId="com.android.ide.eclipse.adt.internal.sourcelookup.AdtSourceLookupDirector"
+            sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+        </launchConfigurationType>
+    </extension>
+    
+    
+    
+    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+        <launchConfigurationTypeImage
+            configTypeID="BLAH.LaunchConfigType"
+            icon="icons/cl.ico"
+            id="BLAH.LaunchConfigTypeImage" />
+    </extension>
+    
+    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+        <launchConfigurationTabGroup
+            class="com.android.ide.eclipse.adt.internal.launch.LaunchConfigTabGroup"
+            description="Codelearn Android Application"
+            id="BLAH.LaunchConfigTabGroup"
+            type="BLAH.LaunchConfigType" />
+    </extension>
+    
+    
+    <extension point="org.eclipse.ui.newWizards">
+        <category
+            id="BLAH.wizards"
+            name="Codelearn Android project" />
+        <wizard
+            canFinishEarly="true"
+            category="BLAH.wizards"
+            class="adt_launcherjuno.TNewWizard"
+            finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
+            hasPages="false"
+            icon="icons/cl.ico"
+            id="adt_launcherjuno.custom"
+            name="Twitter App"
+            preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
+            project="true" >
+            <description>
+               Create a Codelearn Android Project
+            </description>
+        </wizard>
+     </extension>
+    
+
+</plugin>
