@@ -57,11 +57,16 @@ Note: For working on these projects, copy contents of dropin-dependencies to you
 
 5) Generate jar as Export -> Export as Jar and save it in respective JARS folder
 
-6) project folder contains a simple android project called twit. 
+6)  Project folder must contain an android project called twit. 
 
-PLEASE NOTE NAME AND POSITION OF THIS PROJECT IS ESSENTIAL FOR TESTS TO RUN. IF YOU WANT TO TRY ANY OTHER ANDROID PROJECT, KEEP THIS PROJECT NAME SAME AND REPLACE THE JAVA FILES WITH YOURS BUT KEEPING NAMES PRESERVER (Otherwise, changes will be reqd in tests as well as plugin project)
+PLEASE NOTE NAME AND POSITION OF THIS PROJECT IS ESSENTIAL FOR TESTS TO RUN. IF YOU WANT TO TRY ANY OTHER ANDROID PROJECT, KEEP THIS PROJECT NAME SAME AND REPLACE THE JAVA FILES WITH YOURS BUT KEEPING NAMES PRESERVED (Otherwise, changes will be reqd in tests as well as plugin project)
 
 7) For plugin project, Export->Export as Plugins and Fragments and save it in respective JARS folder.
+
+
+Twit-test project has RunTest.java which can be called to test TESTS.
+
+ALL JARS MUST BE SAVED TO RESPECTIVE JARS FOLDERS. JAR FILES FROM THESE FOLDERS ARE COPIED TO DROPIN-DEPENDENCIES FOLDER.
 
 ### Deployment
 
@@ -72,9 +77,6 @@ Paste in dropin-dependencies, replacing old copies.
 Create a dropin-dependencies zip to be given to users.
 
 
-Twit-test project has RunTest.java which can be called to test TESTS.
-
-ALL JARS MUST BE SAVED TO RESPECTIVE JARS FOLDERS. JAR FILES FROM THESE FOLDERS ARE COPIED TO DROPIN-DEPENDENCIES FOLDER.
 
 ==========================================================
 
