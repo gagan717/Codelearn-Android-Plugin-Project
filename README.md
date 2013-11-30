@@ -1,4 +1,5 @@
 Codelearn Android Project
+==========================
 
 Author: Pratik Anand 
 
@@ -8,26 +9,10 @@ twitter.com/pratikone
 
 email:pratik[DOT]preet[AT]gmail[DOT]com
 
-=================================================================
-
-
-This project has 3 folders respectively :
-
-plugin : Codelearn Android plugin project and its generated JAR
-
-project: Codelearns Android projects like twitter project and their generated ZIPs
-
-tests: Codelearn Android tests for projects like twitter project and generated JARs
-
-Note: For working on these projects, copy contents of dropin-dependencies to your ECLIPSE dropins folder. Import all three projects in Eclipse workspace. Make sure your ECLIPSE_HOME variable is set, otherwise set it or change Build path to include jars from dropins folder of eclipse.
-
-
-Twit-test project has RunTest.java which can be called to test TESTS.
-
-ALL JARS MUST BE SAVED TO RESPECTIVE JARS FOLDERS. JAR FILES FROM THESE FOLDERS ARE COPIED TO DROPIN-DEPENDENCIES FOLDER.
 
 ===================================================================
-
+How to run this Github project (plugin+android project+tests)
+---------------------------------------------------------------
 Steps to run this plugin:
 
 1)Use Eclipse bundled with android SDK OR install ADT plugin for a vanilla eclipse
@@ -46,9 +31,54 @@ The android project will launch and parallely all tests by Codelearn will be exe
 
 7) The Codelearn website will show a popup showing the status of tests.
 
+=================================================================
+
+How to set developer environment to modify this project
+--------------------------------------------------------
+
+### Contents of the Github project
+This project has 3 folders respectively :
+
+plugin : Codelearn Android plugin project and its generated JAR
+
+project: Codelearns Android projects like twitter project and their generated ZIPs
+
+tests: Codelearn Android tests for projects like twitter project and generated JARs
+
+Note: For working on these projects, copy contents of dropin-dependencies to your ECLIPSE dropins folder. Import all three projects in Eclipse workspace. Make sure your ECLIPSE_HOME variable is set, otherwise set it or change Build path to include jars from dropins folder of eclipse.
+
+1) Import all 3 projects into eclipse workspace
+
+2) Set your ECLIPSE_HOME to point to eclipse directory
+
+3) To run tests, execute RunTests.java
+
+4) To modify tests, edit in SampleTests.java
+
+5) Generate jar as Export -> Export as Jar and save it in respective JARS folder
+
+6) project folder contains a simple android project called twit. 
+
+PLEASE NOTE NAME AND POSITION OF THIS PROJECT IS ESSENTIAL FOR TESTS TO RUN. IF YOU WANT TO TRY ANY OTHER ANDROID PROJECT, KEEP THIS PROJECT NAME SAME AND REPLACE THE JAVA FILES WITH YOURS BUT KEEPING NAMES PRESERVER (Otherwise, changes will be reqd in tests as well as plugin project)
+
+7) For plugin project, Export->Export as Plugins and Fragments and save it in respective JARS folder.
+
+### Deployment
+
+Copy plugin's jar from its respective JARS folder, copy zip of android from its respective JARS folder, copy jar of tests from its respective JARS folder
+
+Paste in dropin-dependencies, replacing old copies.
+
+Create a dropin-dependencies zip to be given to users.
 
 
-Contents of drop in dependencies:
+Twit-test project has RunTest.java which can be called to test TESTS.
+
+ALL JARS MUST BE SAVED TO RESPECTIVE JARS FOLDERS. JAR FILES FROM THESE FOLDERS ARE COPIED TO DROPIN-DEPENDENCIES FOLDER.
+
+==========================================================
+
+### Contents of drop in dependencies:
 
 adt_launcherCodelearn (plugin)
 
@@ -66,4 +96,3 @@ twit.zip (mock twitter client project)
 
 twit-tests.jar (tests for twitter project)
 
-==========================================================
