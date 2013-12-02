@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Adt_launcherJuno
+Bundle-Name: Adt_launcherJunoCodelearn
 Bundle-SymbolicName: adt_launcherJuno; singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: adt_launcherjuno.Activator

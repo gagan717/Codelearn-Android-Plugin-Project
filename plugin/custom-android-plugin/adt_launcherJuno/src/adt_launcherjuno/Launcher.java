@@ -23,22 +23,21 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.osgi.framework.Bundle;
 
-
-import adt_launcherjuno.ui.DialogExamples;
 import adt_launcherjuno.ui.HttpRequest;
 
 import com.android.ide.eclipse.adt.internal.launch.AndroidLaunchController;
@@ -100,27 +99,41 @@ public class Launcher implements ILaunchShortcut {
 	public static void launchProjectTests(IProject project){
 		
 			System.out.println("Running launchProjectTests");
+			String pluginInstalled="blank";
+			
+			//check if plugin is installed or not by symbolic-name of plugin
+			if(Platform.getBundle("adt_launcherJuno").getState()>=Bundle.ACTIVE){
+				pluginInstalled="true";
+			}else{
+				pluginInstalled="false";
+			}
 			
 			
 			String username=authenticateWithServer(); //authenticate with Codelearn website
+			//classpath for tests jar file
+			List<String> classpath=getFiles();
+			String projectRoot=null;
 			
 			try {	
-				project.open(null /* IProgressMonitor */);
+			if(project!=null){
+				 project.open(null /* IProgressMonitor */);
+				
+				 IJavaProject javaProject = JavaCore.create(project);
+				 
+				 
+				projectRoot=new File(project.getLocationURI()).getAbsolutePath();
+				
+				 
+				
+				
+				//add project classpath to classpath list
+				String[] classPathEntries = JavaRuntime.computeDefaultRuntimeClassPath(javaProject);
+				
+				for(int i=0;i<classPathEntries.length;i++){
+					classpath.add(classPathEntries[i]);
+				}
 			
-			 IJavaProject javaProject = JavaCore.create(project);
-			 
-			 
-			 String projectRoot=new File(project.getLocationURI()).getAbsolutePath();
-			 //classpath for tests jar file
-			 
-			List<String> classpath=getFiles();
-			
-			//add project classpath to classpath list
-			String[] classPathEntries = JavaRuntime.computeDefaultRuntimeClassPath(javaProject);
-			
-			for(int i=0;i<classPathEntries.length;i++){
-				classpath.add(classPathEntries[i]);
-			}
+			} //if(project!=null)
 			
 			List<URL> urlList = new ArrayList<URL>();
 			for (int i = 0; i < classpath.size(); i++) {
@@ -130,17 +143,21 @@ public class Launcher implements ILaunchShortcut {
 			 urlList.add(url);
 			}
 			
+			ClassLoader parentClassLoader=null;
+			if(project!=null){
+				parentClassLoader = project.getClass().getClassLoader();
+			}//if(project!=null) second check
 			
-			ClassLoader parentClassLoader = project.getClass().getClassLoader();
 			URL[] urls = (URL[]) urlList.toArray(new URL[urlList.size()]);
 			URLClassLoader classLoader = new URLClassLoader(urls, parentClassLoader);
 				 
-				  //use of java reflection 
+			//use of java reflection 
 			Class<?> clazz = classLoader.loadClass("com.example.test.activity.RunTest");  //load class
 				 
-		    Constructor<?> ct = clazz.getConstructor(String.class);  //define constructor
+		    Constructor<?> ct = clazz.getConstructor(String.class,String.class);  //define constructor
 			Object parameter=projectRoot; //create object to be passed in reflection class
-			Object instance =ct.newInstance(parameter);	//create a new instance of class
+			Object parameter2=pluginInstalled; //create object to be passed in reflection class
+			Object instance =ct.newInstance(parameter,parameter2);	//create a new instance of class
 			Field field=instance.getClass().getDeclaredField("failures_json");
 			String failures_json=(String) field.get(instance);
 			
@@ -252,46 +269,65 @@ public class Launcher implements ILaunchShortcut {
 	public static String authenticateWithServer(){
 		//Get username password from strings.xml
 		String username="blank";
-    	String filePath=Launcher.getEclipseHome()+"/dropins/config.properties";
+		username=getPropertyfromfile("username");
+    	
+    	
+    	return username;
+	}
+	
+	//return value from config.properties in dropins folder
+	public static String getPropertyfromfile(String key){
+		String value=null;
+		String filePath=Launcher.getEclipseHome()+"/dropins/config.properties";
     	Properties prop = new Properties();
     	File file=new File(filePath);
     	if(file.exists()){
     	
 	    	try {
 	    		prop.load(new FileInputStream(filePath));
-	    		username=prop.getProperty("username");
+	    		value=prop.getProperty(key);
 	    	} catch (IOException ex) {
 	    		ex.printStackTrace();
 	        }
     	}
     	else{
-	    	username= prop.getProperty("username");
-	    	if ( username == null || username.length() == 0){
-	    		System.out.println("username not found. Show dialog");
-	    		Display.getDefault().syncExec( new Runnable() { 
-	    	        public void run() {
-	    	        	ApplicationWindow window = new DialogExamples(null);
-	    	            //window.setBlockOnOpen(true);
-	    	            window.open();
-	    	           
-	    	        }
-	    	    } );
-	            username = new DialogExamples(null).username;
-	            prop.setProperty("username",username);
-	            
-	            try {
-	            	prop.store(new FileOutputStream(filePath), null);
-	        	} catch (IOException ex) {
-	        		ex.printStackTrace();
-	            }
-	    		//return;
-	    	}
-	    	System.out.println("username found: " + username);
+    		Display.getDefault().asyncExec( new Runnable() { 
+    	        public void run() {
+    	        	MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Codelearn Plugin", "config.properties not found in dropins folder");
+    	        }
+    	    } );
+    		
     	}
-    	
-    	
-    	return username;
+    	return value;
 	}
 	
+	public static String setPropertytofile(String key,String value){
+		String filePath=Launcher.getEclipseHome()+"/dropins/config.properties";
+    	Properties prop = new Properties();
+    	File file=new File(filePath);
+    	if(file.exists()){
+    	
+	    	try {
+	    		prop.load(new FileInputStream(filePath));
+	    		prop.setProperty(key, value);
+	    		prop.store(new FileOutputStream(filePath), null);
+	    	} catch (IOException ex) {
+	    		ex.printStackTrace();
+	        }
+    	}
+    	else{
+    		Display.getDefault().asyncExec( new Runnable() { 
+    	        public void run() {
+    	        	MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Codelearn Plugin", "config.properties not found in dropins folder");
+    	        }
+    	    } );
+    		
+    	}
+    	return value;
+		
+		
+		
+
+	}
 	
 }

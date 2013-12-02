@@ -105,5 +105,11 @@
         </wizard>
      </extension>
     
+	<!-- startup code of plugin -->
+	<extension point="org.eclipse.ui.startup">
+     <startup class="adt_launcherjuno.StartupClass"/>
+   </extension>
+
+
 
 </plugin>
