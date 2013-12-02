@@ -47,6 +47,9 @@ tests: Codelearn Android tests for projects like twitter project and generated J
 
 Note: For working on these projects, copy contents of dropin-dependencies to your ECLIPSE dropins folder. Import all three projects in Eclipse workspace. Make sure your ECLIPSE_HOME variable is set, otherwise set it or change Build path to include jars from dropins folder of eclipse.
 
+
+### Requirements : Eclipse comes with Plugin development environment packaged with it. You can check by going to File->New->Other->Plugin development category exists. Else download PDE plugin for eclipse by following steps in this blog: http://blog.ankursharma.org/2009/08/how-do-i-install-pde_20.html
+
 1) Import all 3 projects into eclipse workspace
 
 2) Set your ECLIPSE_HOME to point to eclipse directory
