@@ -51,9 +51,12 @@ Note: For working on these projects, copy contents of dropin-dependencies to you
 
 2) Set your ECLIPSE_HOME to point to eclipse directory
 
-3) To run tests, execute RunTests.java
+{Note: Goto Eclipse Preferences ->Java->Build Path-> Classpath vatiables and create a new variable ECLIPSE_HOME specifying the location of directory from where Eclipse has been launched.}
 
-4) To modify tests, edit in SampleTests.java
+
+3) To modify tests, edit in SampleTests.java
+
+4) To execute these modifications, goto RunTests.java and and click on Run (or Run as->Run as Java Application).
 
 5) Generate jar as Export -> Export as Jar and save it in respective JARS folder
 
