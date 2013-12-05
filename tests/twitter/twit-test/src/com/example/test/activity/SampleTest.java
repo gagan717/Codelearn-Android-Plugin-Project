@@ -1,10 +1,10 @@
 package com.example.test.activity;
 
-import com.example.twit.MainActivity;
-import com.example.twit.R;
 import com.example.test.runner.SampleTestRunner;
 
 
+import org.codelearn.twitter.MainActivity;
+import org.codelearn.twitter.R;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

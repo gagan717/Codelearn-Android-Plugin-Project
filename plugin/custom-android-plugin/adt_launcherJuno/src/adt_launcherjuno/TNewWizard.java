@@ -2,18 +2,10 @@ package adt_launcherjuno;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -23,15 +15,11 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.dialogs.IOverwriteQuery;
-import org.eclipse.ui.internal.wizards.datatransfer.ZipLeveledStructureProvider;
-import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 
 
 
@@ -70,7 +58,7 @@ public class TNewWizard  extends Wizard implements INewWizard {
 			 */
 			
 			description = ResourcesPlugin.getWorkspace().
-					loadProjectDescription(  new Path(ResourcesPlugin.getWorkspace().getRoot().getLocation()+"/twit/.project"));
+					loadProjectDescription(  new Path(ResourcesPlugin.getWorkspace().getRoot().getLocation()+"/CodelearnTwitterApp/.project"));
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(description.getName());
 			project.create(description, null);
 			project.open(null);

@@ -57,7 +57,7 @@ public class RunTest {
 		File parentparentparentDir=parentparentDir.getAbsoluteFile().getParentFile();
 		File parentparentparentparentDir=parentparentparentDir.getAbsoluteFile().getParentFile();
 		
-		new RunTest(parentparentparentparentDir.getAbsolutePath()+"/project/twitter/twit","true");
+		new RunTest(parentparentparentparentDir.getAbsolutePath()+"/project/twitter/CodelearnTwitterApp","true");
 		
 	}
 	
