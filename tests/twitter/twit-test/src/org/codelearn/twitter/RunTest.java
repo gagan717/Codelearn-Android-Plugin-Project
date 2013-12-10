@@ -1,11 +1,14 @@
-package com.example.test.activity;
+package org.codelearn.twitter;
 
 import java.io.File;
 
+import org.codelearn.twitter.MainActivity;
 import org.json.simple.JSONArray;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
+
+import android.app.Activity;
 
 public class RunTest {
 	public static String PROJECT_ROOT=null;
@@ -14,15 +17,22 @@ public class RunTest {
 	public String failures_json;
 	@SuppressWarnings("unchecked")
 	public RunTest(String root,String pluginInstalled) {
+		
+		
+		
 		System.out.println("Inside RunTest");
 		
 		PROJECT_ROOT=root;
 		PLUGIN_READY=pluginInstalled;
 		
 		
+		
+		
+		
+		
 		System.out.println("Root RunTest"+PROJECT_ROOT);
 		JUnitCore junit = new JUnitCore();
-    	Result result = junit.run(com.example.test.activity.SampleTest.class);
+    	Result result = junit.run(org.codelearn.twitter.TestMainActivity.class);
     	//System.out.println("completed " + result.getRunCount() + " tests");
     	//System.out.println("No. of failed test cases="+result.getFailures().size());
     	
@@ -35,7 +45,7 @@ public class RunTest {
         
         //plugin test
         if(PLUGIN_READY.equals("true")==false){
-        	failuresList.add("testCodelearnPlugin(com.example.test.activity.SampleTest):\n Expected: \"true\" \n got: \""+PLUGIN_READY+"\"");
+        	failuresList.add("testCodelearnPlugin(org.codelearn.twitter.TestMainActivity):\n Expected: \"true\" \n got: \""+PLUGIN_READY+"\"");
         }
         
         //to be accessed by reflection 
@@ -46,6 +56,13 @@ public class RunTest {
         System.out.println(failures_json.toString());
        
 }
+	
+	
+	final  static String getProjectRoot(){
+		
+		return PROJECT_ROOT;
+		
+	}
 	
 	
 	public static void main(String[] args) {

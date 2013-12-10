@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>repository</name>
+			<type>2</type>
+			<location>/Users/pratikone/Code/adt-bundle-mac-x86_64-20131030/eclipse/dropins/repository</location>
+		</link>
+	</linkedResources>
 </projectDescription>
