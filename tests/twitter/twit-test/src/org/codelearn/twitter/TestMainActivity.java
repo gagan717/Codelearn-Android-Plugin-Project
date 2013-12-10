@@ -53,6 +53,8 @@ public class TestMainActivity{
 	@Test
     public void testLesson3() throws Exception {
 		TextView view;
+		
+		
 		assertNotNull("No TextView found in activity_main.xml.",view=(TextView)loginTopLayout.getChildAt(0));
 		
 		assertNotNull("hello_world is not found in strings.xml", activity.getResources().getString(R.string.hello_world));
@@ -66,6 +68,23 @@ public class TestMainActivity{
         assertTrue("String hello_world is unchanged from Hello world!", helloFromActivity.equalsIgnoreCase("Hello world!")==false);
 	
     }
+	
+	
+	@Test
+	public void testLesson5(){
+		TextView view;
+		assertNotNull("No TextView found in activity_main.xml.",view=(TextView)loginTopLayout.getChildAt(0));
+
+		assertTrue("TextView android:layout_width is not fill_parent.", view.getLayoutParams().width==-1); //layout width: fill_parent
+		
+		//hello twitter string
+		assertNotNull("hello_twitter is not found in strings.xml", activity.getResources().getString(R.string.hello_twitter));
+
+		String helloFromActivity = activity.getResources().getString(R.string.hello_twitter);
+		assertTrue("TextView text is different from hello_twitter in strings.xml. Change TextView's android:text  to @string/hello_twitter", view.getText().toString().equals(helloFromActivity) );
+
+		
+	}
 	
 	/*
 	//lesson 5 &  6 username and layout
