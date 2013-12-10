@@ -152,7 +152,7 @@ public class Launcher implements ILaunchShortcut {
 			URLClassLoader classLoader = new URLClassLoader(urls, parentClassLoader);
 				 
 			//use of java reflection 
-			Class<?> clazz = classLoader.loadClass("com.example.test.activity.RunTest");  //load class
+			Class<?> clazz = classLoader.loadClass("org.codelearn.twitter.RunTest");  //load class
 				 
 		    Constructor<?> ct = clazz.getConstructor(String.class,String.class);  //define constructor
 			Object parameter=projectRoot; //create object to be passed in reflection class

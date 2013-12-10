@@ -98,7 +98,9 @@ junit.jar
 
 maps.jar
 
-roboelectric-tests.jar
+roboelectric-with-dependencies.jar
+
+m2.zip (maven dependencies for roboelectric 2.2)
 
 twit.zip (mock twitter client project)
 
