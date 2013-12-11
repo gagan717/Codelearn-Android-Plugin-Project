@@ -13,6 +13,7 @@ import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowIntent;
 import org.robolectric.shadows.ShadowTextView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
@@ -31,10 +32,11 @@ import android.widget.TextView;
 
 @RunWith(SampleTestRunner.class)
 public class TestMainActivity{
-	MainActivity activity;
-	TweetListActivity tweetActivity;
+	Activity activity;
+	Activity tweetActivity;
+	Activity tweetDetailActivity;
 	RelativeLayout loginTopLayout,tweetListLayout;
-	LinearLayout row_tweetLayout;
+	LinearLayout row_tweetLayout,tweetDetailLayout;
 	
 	
 	@Before
@@ -304,6 +306,8 @@ public class TestMainActivity{
 			ListAdapter adapter=null;
 			assertNotNull("No adapter set for ListView.", adapter=listView.getAdapter());
 			assertTrue("ListView adapter is not an ArrayAdapter.", adapter instanceof ArrayAdapter<?>);
+			assertTrue("Array adapter is empty.Maybe you have not passed String array appropriately.", adapter.getCount()>0);
+
 			assertTrue("ListView is empty and has no child views. Maybe your adapter has not been passed properly to it", listView.getChildCount()>0);
 			
 			
@@ -348,6 +352,62 @@ public class TestMainActivity{
 			assertTrue("Body textview's android:layout_width is not fill_parent",bodyView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
 			assertTrue("Date textview's android:layout_width is not fill_parent",dateView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
 
-		}   
+		}
+		
+		@Test
+		public void testLesson13() throws Exception{
+			
+			
+			ListAdapter adapter=null;
+			assertNotNull("TweetAdapter nested class not present in TweetLstActivity.java", adapter=new TweetAdapter(tweetActivity, new String[10]));
+			
+		}
+		
+		public void testLesson14() throws Exception{
+			int tviews=tweetListLayout.getChildCount();
+			
+			int listviewIndex=0;
+			
+			for(int i=0;i<tviews;i++){
+				View v=tweetListLayout.getChildAt(i);
+				 if(v instanceof ListView){
+					 listviewIndex=i; //index of ListView
+					
+				 }
+
+			}
+			
+			ListView listView=(ListView) tweetListLayout.getChildAt(listviewIndex);
+			ListAdapter adapter=null;
+			assertNotNull("No adapter set for ListView.", adapter=listView.getAdapter());
+			assertTrue("ListView adapter is not a TweetAdapter.", adapter instanceof TweetAdapter);
+			assertTrue("Array adapter is empty.Maybe you have not passed String array appropriately.", adapter.getCount()>0);
+			assertTrue("ListView is empty and has no child views. Maybe your adapter has not been passed properly to it", listView.getChildCount()>0);
+			
+			
+			//listener
+			for(int i=0;i<tviews;i++){
+				View v=tweetListLayout.getChildAt(i);
+				 if(v instanceof TextView){
+					 String prev=((TextView) v).getText().toString();
+					 v.performClick();
+					 assertTrue("Listener not working on tweet. Try checking the steps to add listener.", ((TextView) v).getText().toString().equals(prev)==false);
+					
+				 }
+
+			}
+			
+		}
+		
+		
+		@Test
+		public void testLesson15() throws Exception{
+			assertNotNull("TweetDetailActivity.java not found. Try the steps again.", (tweetDetailActivity=Robolectric.buildActivity(TweetDetailActivity.class).create().visible().get()));
+			assertNotNull("Layout name is not activity_tweet_detail. Try the steps again.",tweetDetailLayout=(LinearLayout)LayoutInflater.from(tweetDetailActivity).inflate(R.layout.activity_tweet_detail,null));
+
+			
+		}
+		
+		
 		    
 }
