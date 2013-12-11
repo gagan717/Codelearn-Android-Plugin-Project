@@ -244,6 +244,17 @@ public class TestMainActivity{
 
 
 			//intent
+			int views=loginTopLayout.getChildCount();
+			
+			
+			for(int i=0;i<views;i++){
+				View v=loginTopLayout.getChildAt(i);
+				 if(v instanceof Button){
+					 v.performClick();
+				}
+
+			}
+			
 			ShadowActivity activityS=Robolectric.shadowOf(activity);
 			Intent startedIntent=activityS.getNextStartedActivity();
 	        ShadowIntent shadowIntent = Robolectric.shadowOf(startedIntent);
