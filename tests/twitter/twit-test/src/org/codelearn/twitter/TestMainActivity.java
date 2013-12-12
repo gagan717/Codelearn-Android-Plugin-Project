@@ -16,6 +16,7 @@ import org.robolectric.shadows.ShadowTextView;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -156,7 +157,7 @@ public class TestMainActivity{
 			int Buttonview=0;
 			String lbl_login=null;
 			
-			int idLinearLayoutSecond = LayoutParams.FILL_PARENT;
+			int idLinearLayoutSecond = 0;
 			
 			for(int i=0;i<views;i++){
 				View v=loginTopLayout.getChildAt(i);
@@ -220,9 +221,48 @@ public class TestMainActivity{
 		
 		@Test
 		public void testLesson8() throws Exception{
-			/*
-			 * placeholder for lesson 8 tests: styling and formatting
-			 */
+			int views=loginTopLayout.getChildCount();
+			int linearview=0;
+			int Buttonview=0;
+			String lbl_login=null;
+			
+			int idLinearLayoutFirst = 0;
+			int idLinearLayoutSecond = 0;
+			
+			for(int i=0;i<views;i++){
+				View v=loginTopLayout.getChildAt(i);
+				if(v instanceof LinearLayout){
+					linearview++;
+					if(linearview==1){
+						idLinearLayoutFirst=i;
+					}
+					if(linearview==2){
+						idLinearLayoutSecond=i;
+					}
+				}
+
+			}
+			
+			
+			
+			//first linear layout
+			LinearLayout llayoutFirst=(LinearLayout)loginTopLayout.getChildAt(idLinearLayoutFirst);
+			for(int i=0;i<llayoutFirst.getChildCount();i++){
+				View internalV=((LinearLayout) llayoutFirst).getChildAt(i);
+				if(internalV instanceof EditText){
+					assertTrue("Username EditText's android:inputType is not textEmailAddress.",((EditText)internalV).getInputType()==InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+				}
+			}
+			
+			
+			//second linear layout
+			LinearLayout llayout=(LinearLayout)loginTopLayout.getChildAt(idLinearLayoutSecond);
+			for(int i=0;i<llayout.getChildCount();i++){
+				View internalV=((LinearLayout) llayout).getChildAt(i);
+				if(internalV instanceof EditText){
+					assertTrue("Password EditText's android:inputType is not textPassword.",((EditText)internalV).getInputType()==InputType.TYPE_TEXT_VARIATION_PASSWORD);
+				}
+			}
 		}
 		
   	
@@ -305,14 +345,18 @@ public class TestMainActivity{
 			ListView listView=(ListView) tweetListLayout.getChildAt(listviewIndex);
 			ListAdapter adapter=null;
 			assertNotNull("No adapter set for ListView.", adapter=listView.getAdapter());
-			assertTrue("ListView adapter is not an ArrayAdapter.", adapter instanceof ArrayAdapter<?>);
-			assertTrue("Array adapter is empty.Maybe you have not passed String array appropriately.", adapter.getCount()>0);
+			assertTrue("The adapter attached to your ListView is not an ArrayAdapter.", adapter instanceof ArrayAdapter<?>);
+			assertTrue("The adapter attached to your ListView is empty. Maybe you have not passed String array appropriately to the ArrayAdapter.", adapter.getCount()>0);
 
+			View notBlankView;
+			assertNotNull("The adapter does not have any proper View element. Check the statement 'new ArrayAdapter(.., <view element>, ..)'.", notBlankView=adapter.getView(0, null, listView));
+			assertTrue("The view in your adapter is empty.",notBlankView.getMeasuredWidth()>0);
 			assertTrue("ListView is empty and has no child views. Maybe your adapter has not been passed properly to it", listView.getChildCount()>0);
 			
 			
 		}
 		    
+		@SuppressWarnings("deprecation")
 		@Test
 		public void testLesson12() throws Exception{
 			assertNotNull("row_tweet.xml cannot be found. Try doing the steps again to create an Android XML file with correct name.",row_tweetLayout=(LinearLayout)LayoutInflater.from(tweetActivity).inflate(R.layout.row_tweet,null));
@@ -323,7 +367,7 @@ public class TestMainActivity{
 			//assertNotNull("user_profile.png is not present in res/drawable-mdpi/ folder.If you are using a different PNG image, change the name to user_profile.png",activity.getResources().getDrawable(R.drawable.user_profile));
 			
 			int rviews=row_tweetLayout.getChildCount();
-			int imageViewCount=0,llayoutCount=0,textViewCount=0;
+			int imageViewCount=0,llayoutCount=0;
 			int indexLinearLayout=0;
 			for(int i=0;i<rviews;i++){
 				View v=row_tweetLayout.getChildAt(i);
@@ -404,6 +448,58 @@ public class TestMainActivity{
 		public void testLesson15() throws Exception{
 			assertNotNull("TweetDetailActivity.java not found. Try the steps again.", (tweetDetailActivity=Robolectric.buildActivity(TweetDetailActivity.class).create().visible().get()));
 			assertNotNull("Layout name is not activity_tweet_detail. Try the steps again.",tweetDetailLayout=(LinearLayout)LayoutInflater.from(tweetDetailActivity).inflate(R.layout.activity_tweet_detail,null));
+
+			int tdviews=tweetDetailLayout.getChildCount();
+			int linearlayoutIndex=0;
+			
+			int imageViewCount=0,llayoutCount=0;
+			for(int i=0;i<tdviews;i++){
+				View v=tweetListLayout.getChildAt(i);
+				 if(v instanceof ImageView){
+					 imageViewCount++;
+						assertNotNull("ImageView tag does not show an image. Make sure that you have linked it to the right image",((ImageView)v).getDrawable());
+
+				 }else if(v instanceof LinearLayout){
+					 llayoutCount++;
+					 linearlayoutIndex=i;
+				 }
+
+			}
+			
+			assertTrue("ImageView tag not found in activity_tweet_detail.xml. ", imageViewCount>0);
+			assertTrue("LinearLayout tag not found in activity_tweet_detail.xml. ", llayoutCount>0);
+
+			//linear layout
+			LinearLayout llayout=(LinearLayout) tweetDetailLayout.getChildAt(linearlayoutIndex);
+			TextView headerView=null,bodyView=null,dateView=null;
+			assertNotNull("Header TextView is missing in linear layout of row_tweet.xml or in wrong order", headerView=(TextView) llayout.getChildAt(0));
+			assertNotNull("Body TextView is missing in linear layout of row_tweet.xml or in wrong order", bodyView=(TextView) llayout.getChildAt(1));
+			assertNotNull("Date TextView is missing in linear layout of row_tweet.xml or in wrong order", dateView=(TextView) llayout.getChildAt(2));
+
+			assertTrue("Header textview's android:layout_width is not fill_parent",headerView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
+			assertTrue("Body textview's android:layout_width is not fill_parent",bodyView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
+			assertTrue("Date textview's android:layout_width is not fill_parent",dateView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
+
+			
+			
+			//intent
+			int tviews=tweetListLayout.getChildCount();
+
+			for(int i=0;i<tviews;i++){
+				View v=tweetListLayout.getChildAt(i);
+				 if(v instanceof TextView){
+					 String prev=((TextView) v).getText().toString();
+					 v.performClick();
+					 break;
+				 }
+
+			}
+			
+			ShadowActivity activityS=Robolectric.shadowOf(tweetActivity);
+			Intent startedIntent=activityS.getNextStartedActivity();
+	        ShadowIntent shadowIntent = Robolectric.shadowOf(startedIntent);
+	        assertThat("Intent is not working on the button. See, if the classes are (this, TweetDetailActivity.class) in TweetListActivity.java !",shadowIntent.getComponent().getClassName(), equalTo(TweetDetailActivity.class.getName()));
+
 
 			
 		}
