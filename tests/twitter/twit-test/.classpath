@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="repository"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/CodelearnTwitterApp"/>
 	<classpathentry kind="var" path="ECLIPSE_HOME/dropins/hamcrest.jar"/>
 	<classpathentry kind="var" path="ECLIPSE_HOME/dropins/json-simple-1.1.1.jar"/>
 	<classpathentry kind="var" path="ECLIPSE_HOME/dropins/junit.jar"/>
@@ -11,5 +10,6 @@
 	<classpathentry kind="lib" path="/Users/pratikone/Code/adt-bundle-mac-x86_64-20131030/sdk/platforms/android-19"/>
 	<classpathentry kind="var" path="ECLIPSE_HOME/dropins/robolectric-2.2-jar-with-dependencies.jar"/>
 	<classpathentry kind="var" path="ECLIPSE_HOME/dropins/android-all-4.3_r2-robolectric-0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CodelearnTwitterApp"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
