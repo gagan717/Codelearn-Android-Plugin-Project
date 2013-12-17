@@ -12,9 +12,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowImageView;
 import org.robolectric.shadows.ShadowIntent;
+import org.robolectric.shadows.ShadowListView;
+import org.robolectric.shadows.ShadowMediaStore.ShadowImages;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -515,23 +519,22 @@ public class TestMainActivity{
 			for(int i=0;i<views;i++){
 				View v=loginTopLayout.getChildAt(i);
 				 if(isInstance(v, Button.class)){
-					 v.performClick();
+					 //Need to get Button from activity otherwise listener won't be recognised
+					 Button bb=(Button)activity.findViewById(v.getId());
+					 bb.performClick();
+					 //v.performClick();
 					 break;
 				}
 
 			}
-			/*
-			 * TODO
-			 * Intent is coming as null in line 3
-			 */
 			
-			/*
 			ShadowActivity activityS=Robolectric.shadowOf(activity);
 			Intent startedIntent=activityS.getNextStartedActivity();
+			assertNotNull("Returned intent is null. Maybe your Intent implementation is not working", startedIntent);
 	        ShadowIntent shadowIntent = Robolectric.shadowOf(startedIntent);
 	        assertThat("Intent is not working on the button. See, if the classes are (MainActivity.this, TweetListActivity.class) !",shadowIntent.getComponent().getClassName(), equalTo(TweetListActivity.class.getName()));
 
-			 */
+			 
 			
 		}
 		
@@ -554,7 +557,7 @@ public class TestMainActivity{
 			}catch(Exception e){
 				assertTrue("Layout name is not activity_tweet_list. Try the steps again.", false);
 			}
-			
+		
 			
 			int tviews=tweetListLayout.getChildCount();
 			int listviewCount=0;
@@ -572,11 +575,13 @@ public class TestMainActivity{
 				 }
 
 			}
-			
+			ListView tempList=(ListView)tweetListLayout.getChildAt(listviewIndex);
 			//listview not found
 			assertTrue("ListView tag not found in activity_tweet_list.xml. ", listviewCount>0);
-			ListView listView=(ListView) tweetListLayout.getChildAt(listviewIndex);
-			System.out.println(listView.getId());
+			//listview adapter defined in java code not in layout xml, hence not picked. Therefore, workaround is used
+			ListView listView=null;
+			listView=(ListView)tweetActivity.findViewById(tempList.getId());
+			
 			ListAdapter adapter=null;
 			assertNotNull("No adapter set for ListView.", adapter=listView.getAdapter());
 			assertTrue("The adapter attached to your ListView is not an ArrayAdapter.", adapter instanceof ArrayAdapter<?>);
@@ -584,7 +589,10 @@ public class TestMainActivity{
 
 			View notBlankView;
 			assertNotNull("The adapter does not have any proper View element. Check the statement 'new ArrayAdapter(.., <view element>, ..)'.", notBlankView=adapter.getView(0, null, listView));
-			assertTrue("The view in your adapter is empty.",notBlankView.getMeasuredWidth()>0);
+			/*
+			 * commented as no proper test condition could be found
+			 */
+			//assertTrue("The view in your adapter is empty.",notBlankView.getMeasuredWidth()>0);
 			assertTrue("ListView is empty and has no child views. Maybe your adapter has not been passed properly to it", listView.getChildCount()>0);
 			
 			
@@ -600,9 +608,12 @@ public class TestMainActivity{
 
 
 			try{
-				row_tweetLayout=(LinearLayout)LayoutInflater.from(tweetActivity).inflate(getfromR("layout", "row_tweet"),null);
+				
+				Activity act=Robolectric.buildActivity(Activity.class).create().get();
+				act.setContentView(getfromR("layout", "row_tweet"));
+				row_tweetLayout=(LinearLayout)LayoutInflater.from(act).inflate(getfromR("layout", "row_tweet"),null);
 				}catch(Exception e){
-				assertTrue("row_tweet.xml cannot be found. Try doing the steps again to create an Android XML file with correct name.", false);
+				assertTrue("row_tweet.xml cannot be found. Try doing the steps again to create an Android XML file with correct name. Exception"+e, false);
 			}
 
 			assertTrue("Linear layout of row_tweet.xml does not have android:orientation as horizontal.", ((LinearLayout) row_tweetLayout).getOrientation()==LinearLayout.HORIZONTAL);
@@ -671,8 +682,9 @@ public class TestMainActivity{
 			}
 			
 			ListAdapter adapter=null;
-			adapter=new TweetAdapter(tweetActivity, new String[10]);
 			
+			assertNotNull("A new instance of TweetAdapter cannot be created. Check its constructor and make sure it is public",
+											adapter=new TweetAdapter(tweetActivity, new String[10]));
 			
 			
 		}
@@ -711,8 +723,15 @@ public class TestMainActivity{
 
 			}
 			
-			ListView listView=(ListView) tweetListLayout.getChildAt(listviewIndex);
+			ListView tempList=(ListView) tweetListLayout.getChildAt(listviewIndex);
+			
+			//listview adapter defined in java code not in layout xml, hence not picked. Therefore, workaround is used
+			//alternate way of doing things is tweetActivity.getListView() when tweetActivity is of type ListActivity
+			ListView listView=null;
+			listView=(ListView)tweetActivity.findViewById(tempList.getId());
+			
 			ListAdapter adapter=null;
+			
 			assertNotNull("No adapter set for ListView.", adapter=listView.getAdapter());
 			assertTrue("ListView adapter is not a TweetAdapter.", adapter instanceof TweetAdapter);
 			assertTrue("Array adapter is empty.Maybe you have not passed String array appropriately.", adapter.getCount()>0);
@@ -736,7 +755,7 @@ public class TestMainActivity{
 		
 		@Test
 		public void testLesson15() throws Exception{
-			Activity tweetActivity;
+			ListActivity tweetActivity;
 			Activity tweetDetailActivity;
 			RelativeLayout tweetListLayout=null;
 			LinearLayout tweetDetailLayout=null;
@@ -776,10 +795,11 @@ public class TestMainActivity{
 			
 			int imageViewCount=0,llayoutCount=0;
 			for(int i=0;i<tdviews;i++){
-				View v=tweetListLayout.getChildAt(i);
+				View v=tweetDetailLayout.getChildAt(i);
 				 if(isInstance(v, ImageView.class)){
 					 imageViewCount++;
-						assertNotNull("ImageView tag does not show an image. Make sure that you have linked it to the right image",((ImageView)v).getDrawable());
+					 
+					 assertNotNull("ImageView tag does not show an image. Make sure that you have linked it to the right image",((ImageView)v).getBackground());
 
 				 }else if(isInstance(v, LinearLayout.class)){
 					 llayoutCount++;
@@ -805,20 +825,14 @@ public class TestMainActivity{
 			
 			
 			//intent
-			int tviews=tweetListLayout.getChildCount();
-
-			for(int i=0;i<tviews;i++){
-				View v=tweetListLayout.getChildAt(i);
-				 if(isInstance(v, TextView.class)){
-					 String prev=((TextView) v).getText().toString();
-					 v.performClick();
-					 break;
-				 }
-
-			}
+			ListView lview=tweetActivity.getListView();
+			lview.performItemClick(((View)lview.getAdapter().getItem(0)), 0, lview.getAdapter().getItemId(0));
+			
+		
 			
 			ShadowActivity activityS=Robolectric.shadowOf(tweetActivity);
 			Intent startedIntent=activityS.getNextStartedActivity();
+			assertNotNull("Returned intent is null. Maybe your Intent implementation is not working", startedIntent);
 	        ShadowIntent shadowIntent = Robolectric.shadowOf(startedIntent);
 	        assertThat("Intent is not working on the button. See, if the classes are (this, TweetDetailActivity.class) in TweetListActivity.java !",shadowIntent.getComponent().getClassName(), equalTo(TweetDetailActivity.class.getName()));
 
