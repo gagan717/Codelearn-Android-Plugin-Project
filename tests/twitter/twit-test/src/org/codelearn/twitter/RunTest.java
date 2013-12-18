@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,8 +26,7 @@ import android.app.Activity;
 public class RunTest {
 	public static String PROJECT_ROOT=null;
 	public static String PLUGIN_READY=null;
-	public JSONArray failuresList;
-	public String failures_json;
+	public List<String> failuresList;
 	@SuppressWarnings("unchecked")
 	public RunTest(String root,String pluginInstalled) {
 		
@@ -48,7 +49,7 @@ public class RunTest {
     	
        	
 
-        failuresList = new JSONArray();
+        failuresList = new ArrayList<String>();
         for (Failure failure : result.getFailures()){
         	System.out.println(failure.toString());
         	failuresList.add(failure.toString());
@@ -60,11 +61,13 @@ public class RunTest {
         }
         
         //to be accessed by reflection 
-        failures_json=failuresList.toString();
+        
         
         //output incl. plugin test
         System.out.println("Failed test cases: "+failuresList.size());	
-        System.out.println(failures_json.toString());
+        for(String str:failuresList){
+        	System.out.println(str);
+        }
         
        
        

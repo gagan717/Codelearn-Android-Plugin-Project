@@ -35,6 +35,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.osgi.framework.Bundle;
 
@@ -158,15 +159,21 @@ public class Launcher implements ILaunchShortcut {
 			Object parameter=projectRoot; //create object to be passed in reflection class
 			Object parameter2=pluginInstalled; //create object to be passed in reflection class
 			Object instance =ct.newInstance(parameter,parameter2);	//create a new instance of class
-			Field field=instance.getClass().getDeclaredField("failures_json");
-			String failures_json=(String) field.get(instance);
+			Field field=instance.getClass().getDeclaredField("failuresList");
+			List<String> failuresList=(List<String>) field.get(instance);
 			
 			System.out.println("back to launchProjectTests");
+			String finalString="";
+			JSONArray json_array=new JSONArray();
+			
+			for(String str:failuresList){
+		        	json_array.add(str);
+		        }
 			
 			JSONObject obj = new JSONObject();
 			
 	        obj.put("uid",uid);
-	        obj.put("failures", failures_json);
+	        obj.put("failures", json_array);
 	    	
 	    	System.out.println(obj.toString());
 	    	
