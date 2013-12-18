@@ -109,7 +109,7 @@ public class Launcher implements ILaunchShortcut {
 			}
 			
 			
-			String username=authenticateWithServer(); //authenticate with Codelearn website
+			String uid=authenticateWithServer(); //authenticate with Codelearn website
 			//classpath for tests jar file
 			List<String> classpath=getFiles();
 			String projectRoot=null;
@@ -165,7 +165,7 @@ public class Launcher implements ILaunchShortcut {
 			
 			JSONObject obj = new JSONObject();
 			
-	        obj.put("username",username);
+	        obj.put("uid",uid);
 	        obj.put("failures", failures_json);
 	    	
 	    	System.out.println(obj.toString());
@@ -268,11 +268,11 @@ public class Launcher implements ILaunchShortcut {
 	
 	public static String authenticateWithServer(){
 		//Get username password from strings.xml
-		String username="blank";
-		username=getPropertyfromfile("username");
+		String uid="blank";
+		uid=getPropertyfromfile("uid");
     	
     	
-    	return username;
+    	return uid;
 	}
 	
 	//return value from config.properties in dropins folder
