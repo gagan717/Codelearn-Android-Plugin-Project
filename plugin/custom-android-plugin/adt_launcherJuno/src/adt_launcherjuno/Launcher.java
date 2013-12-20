@@ -100,14 +100,6 @@ public class Launcher implements ILaunchShortcut {
 	public static void launchProjectTests(IProject project){
 		
 			System.out.println("Running launchProjectTests");
-			String pluginInstalled="blank";
-			
-			//check if plugin is installed or not by symbolic-name of plugin
-			if(Platform.getBundle("adt_launcherJuno").getState()>=Bundle.ACTIVE){
-				pluginInstalled="true";
-			}else{
-				pluginInstalled="false";
-			}
 			
 			
 			String uid=authenticateWithServer(); //authenticate with Codelearn website
@@ -155,15 +147,14 @@ public class Launcher implements ILaunchShortcut {
 			//use of java reflection 
 			Class<?> clazz = classLoader.loadClass("org.codelearn.twitter.RunTest");  //load class
 				 
-		    Constructor<?> ct = clazz.getConstructor(String.class,String.class);  //define constructor
+		    Constructor<?> ct = clazz.getConstructor(String.class);  //define constructor
 			Object parameter=projectRoot; //create object to be passed in reflection class
-			Object parameter2=pluginInstalled; //create object to be passed in reflection class
-			Object instance =ct.newInstance(parameter,parameter2);	//create a new instance of class
+			Object instance =ct.newInstance(parameter);	//create a new instance of class
 			Field field=instance.getClass().getDeclaredField("failuresList");
 			List<String> failuresList=(List<String>) field.get(instance);
 			
 			System.out.println("back to launchProjectTests");
-			String finalString="";
+			
 			JSONArray json_array=new JSONArray();
 			
 			for(String str:failuresList){

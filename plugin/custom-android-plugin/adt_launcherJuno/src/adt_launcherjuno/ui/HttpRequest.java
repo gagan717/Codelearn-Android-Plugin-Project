@@ -11,9 +11,8 @@ public class HttpRequest {
 		
 		//String message = "my message";
     try {
-        //URL url = new URL("http://androidtutorial.herokuapp.com/reports/incoming");
     	URL url = new URL("http://www.codelearn.org/android-tutorial/reports/incoming");
-    	
+    	//URL url=new URL("http://192.168.1.128:3000/reports/incoming");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setRequestMethod("POST");

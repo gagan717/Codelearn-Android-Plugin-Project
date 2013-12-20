@@ -25,17 +25,16 @@ import android.app.Activity;
 
 public class RunTest {
 	public static String PROJECT_ROOT=null;
-	public static String PLUGIN_READY=null;
 	public List<String> failuresList;
 	@SuppressWarnings("unchecked")
-	public RunTest(String root,String pluginInstalled) {
+	public RunTest(String root) {
 		
 		
 		
 		System.out.println("Inside RunTest");
 		
 		PROJECT_ROOT=root;
-		PLUGIN_READY=pluginInstalled;
+		
 		
 		
 		
@@ -55,13 +54,7 @@ public class RunTest {
         	failuresList.add(failure.toString());
         }
         
-        //plugin test
-        if(PLUGIN_READY.equals("true")==false){
-        	failuresList.add("testCodelearnPlugin(org.codelearn.twitter.TestMainActivity):\n Expected: \"true\" \n got: \""+PLUGIN_READY+"\"");
-        }
-        
-        //to be accessed by reflection 
-        
+       
         
         //output incl. plugin test
         System.out.println("Failed test cases: "+failuresList.size());	
@@ -90,7 +83,7 @@ public class RunTest {
 		File parentparentparentDir=parentparentDir.getAbsoluteFile().getParentFile();
 		File parentparentparentparentDir=parentparentparentDir.getAbsoluteFile().getParentFile();
 		
-		new RunTest(parentparentparentparentDir.getAbsolutePath()+"/project/twitter/CodelearnTwitterApp","true");
+		new RunTest(parentparentparentparentDir.getAbsolutePath()+"/project/twitter/CodelearnTwitterApp");
 		
 	}
 	
