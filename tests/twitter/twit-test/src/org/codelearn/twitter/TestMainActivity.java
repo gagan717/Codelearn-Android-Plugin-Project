@@ -63,7 +63,7 @@ public class TestMainActivity{
 			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			assertTrue("Codelearn Twitter App cannot be located. You are running a different project or rebuilding the current one",false);
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
