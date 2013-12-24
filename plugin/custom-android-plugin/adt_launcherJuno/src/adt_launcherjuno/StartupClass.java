@@ -24,14 +24,14 @@ public class StartupClass implements IStartup{
 		String executedOnce=Launcher.getPropertyfromfile("executedOnce");
 		if(executedOnce!=null){
 			if(executedOnce.equalsIgnoreCase("false")){
-				
+				/*
 				Display.getDefault().asyncExec( new Runnable() { 
 			        public void run() {
 			        	String username=Launcher.getPropertyfromfile("username");
 			        	MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Codelearn Plugin", "Welcome to Codelearn.org \nYou are logged in with "+username);
 			        }
 			    } );
-				
+				*/
 				//copy roboelectric 2.0 maven dependencies to user.home/.m2 folder
 				try {
 					extractToUSERHOME();
@@ -41,10 +41,9 @@ public class StartupClass implements IStartup{
 				}
 				
 				Launcher.setPropertytofile("executedOnce","true");
-				
+				Launcher.executedOnce="false";
 				//fail all the tests for the first time except plugin test
 				Launcher.launchProjectTests(null);
-				
 			}	
 		}
 		

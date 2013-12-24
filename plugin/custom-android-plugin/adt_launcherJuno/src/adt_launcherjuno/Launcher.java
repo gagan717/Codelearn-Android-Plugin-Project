@@ -46,7 +46,7 @@ import com.android.ide.eclipse.adt.internal.launch.AndroidLaunchController;
 
 @SuppressWarnings("restriction")
 public class Launcher implements ILaunchShortcut {
-
+    public static String executedOnce="true";
 	
 	@Override
 	public void launch(ISelection selection, String mode) {

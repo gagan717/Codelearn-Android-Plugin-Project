@@ -175,7 +175,7 @@ public class TestMainActivity{
 		String helloFromActivity=null;
 		assertNotNull("No TextView found in activity_main.xml.",view=(TextView)loginTopLayout.getChildAt(0));
 
-		assertTrue("TextView android:layout_width is not fill_parent.", view.getLayoutParams().width==LayoutParams.FILL_PARENT); //layout width: fill_parent
+		assertTrue("TextView android:layout_width is not fill_parent in activity_main.xml", view.getLayoutParams().width==LayoutParams.FILL_PARENT); //layout width: fill_parent
 		
 		//hello twitter string
 		assertNotNull("hello_twitter is not found in strings.xml", helloFromActivity=activity.getResources().getString(getfromR("string", "hello_twitter")));
@@ -221,7 +221,7 @@ public class TestMainActivity{
 			View v=loginTopLayout.getChildAt(i);
 			if(isInstance(v, LinearLayout.class)){
 				linearview++;
-				assertTrue("Linear layout's android:orientation is not horizontal.", ((LinearLayout) v).getOrientation()==LinearLayout.HORIZONTAL);
+				assertTrue("Linear layout's android:orientation is not horizontal in activity_main.xml", ((LinearLayout) v).getOrientation()==LinearLayout.HORIZONTAL);
 				
 				int internalViews=((LinearLayout) v).getChildCount();
 				for(int j=0;j<internalViews;j++){
@@ -251,10 +251,10 @@ public class TestMainActivity{
 		
 		//null check is optional
 		if(lbl_username!=null)
-			assertTrue("TextView text is not same as lbl_username of strings.xml", activity.getResources().getString(getfromR("string", "lbl_username")).equals(lbl_username));
+			assertTrue(" TextView text of activity_main.xml is not same as lbl_username of strings.xml", activity.getResources().getString(getfromR("string", "lbl_username")).equals(lbl_username));
 		
 		if(lbl_enter_username!=null)
-			assertTrue("EditText text is not same as lbl_enter_username of strings.xml", activity.getResources().getString(getfromR("string", "lbl_enter_username")).equals(lbl_enter_username));
+			assertTrue("EditText text of activity_main.xml is not same as lbl_enter_username of strings.xml", activity.getResources().getString(getfromR("string", "lbl_enter_username")).equals(lbl_enter_username));
                     
     }
 
@@ -330,10 +330,10 @@ public class TestMainActivity{
 			
 			//null check is optional
 			if(lbl_pwd!=null)
-				assertTrue("TextView's text of second Linear Layout is not same as lbl_pwd of strings.xml", activity.getResources().getString(getfromR("string", "lbl_pwd")).equals(lbl_pwd));
+				assertTrue("TextView's text of second Linear Layout in activity_main.xml  is not same as lbl_pwd of strings.xml", activity.getResources().getString(getfromR("string", "lbl_pwd")).equals(lbl_pwd));
 			
 			if(lbl_enter_pwd!=null)
-				assertTrue("EditText's text of second Linear Layout is not same as lbl_enter_pwd of strings.xml", activity.getResources().getString(getfromR("string", "lbl_enter_pwd")).equals(lbl_enter_pwd));
+				assertTrue("EditText's text of second Linear Layout in activity_main.xml is not same as lbl_enter_pwd of strings.xml", activity.getResources().getString(getfromR("string", "lbl_enter_pwd")).equals(lbl_enter_pwd));
 	            
 			//check for login button 
 			assertNotNull("lbl_login is not found in strings.xml. It is used as label of the button", activity.getResources().getString(getfromR("string", "lbl_login")));
@@ -400,7 +400,7 @@ public class TestMainActivity{
 					 * TODO
 					 * anomaly: returned type is 33, expected is 32
 					 */
-					assertTrue("Username EditText's android:inputType is not textEmailAddress.",((EditText)internalV).getInputType()-1==InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+					assertTrue("Username EditText's android:inputType is not textEmailAddress in activity_main.xml ",((EditText)internalV).getInputType()-1==InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 				}
 			}
 			
@@ -414,7 +414,7 @@ public class TestMainActivity{
 					 * TODO
 					 * anomaly: returned type is 129, expected is 128
 					 */
-					assertTrue("Password EditText's android:inputType is not textPassword.",((EditText)internalV).getInputType()-1==InputType.TYPE_TEXT_VARIATION_PASSWORD);
+					assertTrue("Password EditText's android:inputType is not textPassword in activity_main.xml",((EditText)internalV).getInputType()-1==InputType.TYPE_TEXT_VARIATION_PASSWORD);
 				}
 			}
 		}
@@ -455,7 +455,7 @@ public class TestMainActivity{
 
 			}
 			
-			assertTrue("Click Listener not listening to the button. Button's text is still the same.", buttonText.equals(activity.getResources().getString(getfromR("string", "lbl_login"))));
+			assertTrue("Click Listener not listening to the button. Button's text is still the same. Correct this error in activity_main.xml", buttonText.equals(activity.getResources().getString(getfromR("string", "lbl_login"))));
 				
 	    }
 		
@@ -530,9 +530,9 @@ public class TestMainActivity{
 			
 			ShadowActivity activityS=Robolectric.shadowOf(activity);
 			Intent startedIntent=activityS.getNextStartedActivity();
-			assertNotNull("Returned intent is null. Maybe your Intent implementation is not working", startedIntent);
+			assertNotNull("Returned intent is null. Maybe your Intent implementation is not working.", startedIntent);
 	        ShadowIntent shadowIntent = Robolectric.shadowOf(startedIntent);
-	        assertThat("Intent is not working on the button. See, if the classes are (MainActivity.this, TweetListActivity.class) !",shadowIntent.getComponent().getClassName(), equalTo(TweetListActivity.class.getName()));
+	        assertThat("Intent is not working on the button. See, if the classes are (MainActivity.this, TweetListActivity.class) in MainActivity.java!",shadowIntent.getComponent().getClassName(), equalTo(TweetListActivity.class.getName()));
 
 			 
 			
@@ -647,9 +647,9 @@ public class TestMainActivity{
 			assertNotNull("Body TextView is missing in linear layout of row_tweet.xml or in wrong order", bodyView=(TextView) llayout.getChildAt(1));
 			assertNotNull("Date TextView is missing in linear layout of row_tweet.xml or in wrong order", dateView=(TextView) llayout.getChildAt(2));
 
-			assertTrue("Header textview's android:layout_width is not fill_parent",headerView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
-			assertTrue("Body textview's android:layout_width is not fill_parent",bodyView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
-			assertTrue("Date textview's android:layout_width is not fill_parent",dateView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
+			assertTrue("Header textview's android:layout_width is not fill_parent in row_tweet.xml",headerView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
+			assertTrue("Body textview's android:layout_width is not fill_parent in row_tweet.xml",bodyView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
+			assertTrue("Date textview's android:layout_width is not fill_parent in row_tweet.xml",dateView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
 
 		}
 		
@@ -689,10 +689,13 @@ public class TestMainActivity{
 			
 		}
 		
+		@Test
 		public void testLesson14() throws Exception{
 			
-			Activity tweetActivity;
+			ListActivity tweetActivity;
 			RelativeLayout tweetListLayout=null;
+			LinearLayout row_tweetLayout=null;
+
 
 			//clean-up -2
 			try{
@@ -709,6 +712,17 @@ public class TestMainActivity{
 				assertTrue("Layout name is not activity_tweet_list. Try the steps again.", false);
 			}
 			
+
+			try{
+				
+				Activity act=Robolectric.buildActivity(Activity.class).create().get();
+				act.setContentView(getfromR("layout", "row_tweet"));
+				row_tweetLayout=(LinearLayout)LayoutInflater.from(act).inflate(getfromR("layout", "row_tweet"),null);
+				}catch(Exception e){
+				assertTrue("row_tweet.xml cannot be found. Try doing the steps again to create an Android XML file with correct name. Exception"+e, false);
+			}
+			
+			
 			
 			int tviews=tweetListLayout.getChildCount();
 			
@@ -723,12 +737,10 @@ public class TestMainActivity{
 
 			}
 			
-			ListView tempList=(ListView) tweetListLayout.getChildAt(listviewIndex);
 			
-			//listview adapter defined in java code not in layout xml, hence not picked. Therefore, workaround is used
-			//alternate way of doing things is tweetActivity.getListView() when tweetActivity is of type ListActivity
-			ListView listView=null;
-			listView=(ListView)tweetActivity.findViewById(tempList.getId());
+			
+			ListView listView=tweetActivity.getListView();
+			
 			
 			ListAdapter adapter=null;
 			
@@ -737,19 +749,24 @@ public class TestMainActivity{
 			assertTrue("Array adapter is empty.Maybe you have not passed String array appropriately.", adapter.getCount()>0);
 			assertTrue("ListView is empty and has no child views. Maybe your adapter has not been passed properly to it", listView.getChildCount()>0);
 			
+			LinearLayout lv=null;
 			
-			//listener
-			for(int i=0;i<tviews;i++){
-				View v=tweetListLayout.getChildAt(i);
-				 if(isInstance(v, TextView.class)){
-					 String prev=((TextView) v).getText().toString();
-					 v.performClick();
-					 assertTrue("Listener not working on tweet. Try checking the steps to add listener.", ((TextView) v).getText().toString().equals(prev)==false);
-					
-				 }
+			assertNotNull("Linear Layout cannot be found in row_tweet.xml", lv=(LinearLayout)listView.getAdapter().getView(0, lv, null));
+			LinearLayout internalL=null;
+			assertNotNull("Second Linear Layout cannot be found in row_tweet.xml", internalL=(LinearLayout)lv.getChildAt(1));
+			TextView textV=null;
+			assertNotNull("TextView inside Second Linear Layout cannot be found in row_tweet.xml", textV=(TextView) internalL.getChildAt(0));
 
-			}
+			TextView tv=(TextView) tweetActivity.findViewById(textV.getId());
+
+			String prev=tv.getText().toString();
 			
+			/*TODO
+			 * listener code not working
+			 */
+			//listView.performItemClick(((View)listView.getAdapter().getItem(0)), 0, listView.getAdapter().getItemId(0));
+			//assertTrue("Listener not working on tweet. Try checking the steps to add listener.",  tv.getText().toString().equals(prev)==false);
+		
 		}
 		
 		
@@ -799,7 +816,7 @@ public class TestMainActivity{
 				 if(isInstance(v, ImageView.class)){
 					 imageViewCount++;
 					 
-					 assertNotNull("ImageView tag does not show an image. Make sure that you have linked it to the right image",((ImageView)v).getBackground());
+					 assertNotNull("ImageView tag does not show an image. Make sure that you have linked it to the right image in activity_tweet_detail.xml ",((ImageView)v).getBackground());
 
 				 }else if(isInstance(v, LinearLayout.class)){
 					 llayoutCount++;
@@ -818,14 +835,15 @@ public class TestMainActivity{
 			assertNotNull("Body TextView is missing in linear layout of row_tweet.xml or in wrong order", bodyView=(TextView) llayout.getChildAt(1));
 			assertNotNull("Date TextView is missing in linear layout of row_tweet.xml or in wrong order", dateView=(TextView) llayout.getChildAt(2));
 
-			assertTrue("Header textview's android:layout_width is not fill_parent",headerView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
-			assertTrue("Body textview's android:layout_width is not fill_parent",bodyView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
-			assertTrue("Date textview's android:layout_width is not fill_parent",dateView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
+			assertTrue("Header textview's android:layout_width is not fill_parent in row_tweet.xml",headerView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
+			assertTrue("Body textview's android:layout_width is not fill_parent in row_tweet.xml",bodyView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
+			assertTrue("Date textview's android:layout_width is not fill_parent in row_tweet.xml",dateView.getLayoutParams().width==LayoutParams.FILL_PARENT);  //layout width: fill_parent
 
 			
 			
 			//intent
 			ListView lview=tweetActivity.getListView();
+			assertNotNull("No adapter set for ListView.",lview.getAdapter());
 			lview.performItemClick(((View)lview.getAdapter().getItem(0)), 0, lview.getAdapter().getItemId(0));
 			
 		

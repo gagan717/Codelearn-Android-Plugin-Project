@@ -43,10 +43,15 @@ public class HttpRequest {
            InputStreamReader reader=new InputStreamReader(connection.getInputStream());
            BufferedReader buff=new BufferedReader(reader);
         	final String receivedMsg=buff.readLine();
-        	
+        	System.out.println("Received from server :"+receivedMsg);
         	Display.getDefault().asyncExec( new Runnable() { 
 		        public void run() {
-		        	MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Codelearn Plugin", receivedMsg);
+		        	String message=receivedMsg;
+		        	if(Launcher.executedOnce.equalsIgnoreCase("false")){
+		        		message="Welcome to Codelearn.org\nYou are logged in with "+Launcher.getPropertyfromfile("username")+"\n"+message;
+		        		Launcher.executedOnce="true";
+		        	}
+		        	MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Codelearn Plugin", message);
 		        }
 		    } );
         	
