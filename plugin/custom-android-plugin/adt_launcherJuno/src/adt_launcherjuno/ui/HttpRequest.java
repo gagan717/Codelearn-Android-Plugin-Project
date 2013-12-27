@@ -24,7 +24,7 @@ public class HttpRequest {
 		//String message = "my message";
     try {
     	URL url = new URL("http://www.codelearn.org/android-tutorial/reports/incoming");
-    	//URL url=new URL("http://192.168.1.128:3000/reports/incoming");
+    	//URL url=new URL("http://192.168.1.5:3000/reports/incoming");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setRequestMethod("POST");
@@ -48,7 +48,7 @@ public class HttpRequest {
 		        public void run() {
 		        	String message=receivedMsg;
 		        	if(Launcher.executedOnce.equalsIgnoreCase("false")){
-		        		message="Welcome to Codelearn.org\nYou are logged in with "+Launcher.getPropertyfromfile("username")+"\n"+message;
+		        		message="Welcome to Codelearn.org\n"+message;
 		        		Launcher.executedOnce="true";
 		        	}
 		        	MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Codelearn Plugin", message);
