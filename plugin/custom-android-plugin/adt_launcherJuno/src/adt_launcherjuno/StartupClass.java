@@ -12,8 +12,11 @@ import java.util.zip.ZipFile;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IStartup;
+
+import adt_launcherjuno.ui.TextDialog;
 
 public class StartupClass implements IStartup{
 	
@@ -45,7 +48,8 @@ public class StartupClass implements IStartup{
 				//fail all the tests for the first time except plugin test
 				Launcher.launchProjectTests(null);
 			}	
-		}
+		
+		 }
 		
 		
 		}
