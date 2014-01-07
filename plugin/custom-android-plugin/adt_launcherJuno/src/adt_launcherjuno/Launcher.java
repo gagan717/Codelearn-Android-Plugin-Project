@@ -47,6 +47,7 @@ import com.android.ide.eclipse.adt.internal.launch.AndroidLaunchController;
 @SuppressWarnings("restriction")
 public class Launcher implements ILaunchShortcut {
     public static String executedOnce="true";
+    public static String version="0.2";
 	
 	@Override
 	public void launch(ISelection selection, String mode) {
@@ -102,7 +103,7 @@ public class Launcher implements ILaunchShortcut {
 			System.out.println("Running launchProjectTests");
 			
 			
-			String uid=authenticateWithServer(); //authenticate with Codelearn website
+			String id=authenticateWithServer(); //authenticate with Codelearn website
 			//classpath for tests jar file
 			List<String> classpath=getFiles();
 			String projectRoot=null;
@@ -162,9 +163,10 @@ public class Launcher implements ILaunchShortcut {
 		        }
 			
 			JSONObject obj = new JSONObject();
-			
-	        obj.put("uid",uid);
+			obj.put("version", Launcher.version);
+	        obj.put("id",id);
 	        obj.put("failures", json_array);
+	        
 	    	
 	    	System.out.println(obj.toString());
 	    	
@@ -266,11 +268,11 @@ public class Launcher implements ILaunchShortcut {
 	
 	public static String authenticateWithServer(){
 		//Get username password from strings.xml
-		String uid="blank";
-		uid=getPropertyfromfile("uid");
+		String id="-1";
+		id=getPropertyfromfile("id");
     	
     	
-    	return uid;
+    	return id;
 	}
 	
 	//return value from config.properties in dropins folder
