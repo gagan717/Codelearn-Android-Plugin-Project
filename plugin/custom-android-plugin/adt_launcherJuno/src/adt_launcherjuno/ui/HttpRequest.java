@@ -36,7 +36,7 @@ public class HttpRequest {
         OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
         writer.write(message);
         writer.close();
-        
+
         if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             // OK
         	System.out.println("received ok");
@@ -52,21 +52,24 @@ public class HttpRequest {
 		        		Launcher.executedOnce="true";
 		        	}
 		        	MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Codelearn Plugin", message);
+		        	
 		        }
 		    } );
         	
         } else {
         	System.out.println("received not ok");
-
-        	Display.getDefault().asyncExec( new Runnable() { 
-		        public void run() {
-		        	MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Codelearn Plugin", "Could not connect to www.codelearn.org. Test your internet connection.");
-		        }
-		    } );
+        	//if unsuccessful first launch, change back executedOnce
+        	if(Launcher.executedOnce.equals("false")){
+				Launcher.setPropertytofile("executedOnce","false");
+        	}
+        	
+        	Launcher.showErrorBox(Integer.toString(connection.getResponseCode())+connection.getResponseMessage());
         	
             // Server returned HTTP error code.
         }
     }catch(SocketTimeoutException e){
+    	Launcher.checkFailedFirst(); //if failed on first launch
+    	
     	Display.getDefault().asyncExec( new Runnable() { 
 	        public void run() {
 	        	MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Codelearn Plugin", "Could not connect to www.codelearn.org. Test your internet connection.");
@@ -74,9 +77,16 @@ public class HttpRequest {
 	    } );
     	
     }catch (MalformedURLException e) {
-        e.printStackTrace();
+    	Launcher.checkFailedFirst(); //if failed on first launch
+    	Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
     } catch (IOException e) {
-        e.printStackTrace();
+    	Launcher.checkFailedFirst(); //if failed on first launch
+    	Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
     }
+    catch(Exception e){
+    	Launcher.checkFailedFirst(); //if failed on first launch
+    	Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
+    	
+      }
 	}
 }

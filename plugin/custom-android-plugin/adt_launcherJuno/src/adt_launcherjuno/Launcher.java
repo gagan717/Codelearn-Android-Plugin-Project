@@ -47,7 +47,7 @@ import com.android.ide.eclipse.adt.internal.launch.AndroidLaunchController;
 @SuppressWarnings("restriction")
 public class Launcher implements ILaunchShortcut {
     public static String executedOnce="true";
-    public static String version="0.2";
+    public static String version="0.3";
 	
 	@Override
 	public void launch(ISelection selection, String mode) {
@@ -175,35 +175,37 @@ public class Launcher implements ILaunchShortcut {
 			
 		  
 		 } catch (ClassNotFoundException e) {
+		    Launcher.checkFailedFirst(); //if failed on first launch
+		    Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
 		 } catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		    Launcher.checkFailedFirst(); //if failed on first launch
+		    Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		    Launcher.checkFailedFirst(); //if failed on first launch
+	    	Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		    Launcher.checkFailedFirst(); //if failed on first launch
+	    	Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
 		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Launcher.checkFailedFirst(); //if failed on first launch
+	    	Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Launcher.checkFailedFirst(); //if failed on first launch
+			Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Launcher.checkFailedFirst(); //if failed on first launch
+			Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
 
 			
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Launcher.checkFailedFirst(); //if failed on first launch
+			Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Launcher.checkFailedFirst(); //if failed on first launch
+			Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
 		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Launcher.checkFailedFirst(); //if failed on first launch
+			Launcher.showErrorBox(e.toString()+"\n"+e.getStackTrace()[0].toString());
 		}
 		 
 	 }
@@ -269,7 +271,9 @@ public class Launcher implements ILaunchShortcut {
 	public static String authenticateWithServer(){
 		//Get username password from strings.xml
 		String id="-1";
-		id=getPropertyfromfile("id");
+		if(getPropertyfromfile("id")!=null){
+			id=getPropertyfromfile("id");
+		}
     	
     	
     	return id;
@@ -324,10 +328,23 @@ public class Launcher implements ILaunchShortcut {
     		
     	}
     	return value;
-		
-		
-		
 
+	}
+	
+	public static void showErrorBox(final String error){
+		Display.getDefault().asyncExec( new Runnable() { 
+	        public void run() {
+	        	MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Codelearn Plugin", "Some exception has occurred.\nException: "+error+"\nCould not connect to www.codelearn.org. Contact devs@codelearn.org");
+	        }
+	    } );
+	}
+	
+	
+	public static void checkFailedFirst(){
+		//if unsuccessful first launch, change back executedOnce
+    	if(Launcher.executedOnce.equals("false")){
+			Launcher.setPropertytofile("executedOnce","false");
+    	}
 	}
 	
 }
